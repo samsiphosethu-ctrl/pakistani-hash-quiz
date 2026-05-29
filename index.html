@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pakistani Hash Origins Quiz</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #fff;
+  color: #1a1a1a;
+}
+#quiz-wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 28px 20px 32px;
+}
+#quiz-header {
+  margin-bottom: 24px;
+}
+#quiz-header p.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1B3A2F;
+  margin-bottom: 6px;
+}
+#quiz-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1B3A2F;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+#quiz-header p.sub {
+  font-size: 14px;
+  color: #4A5D53;
+  line-height: 1.5;
+}
+#progress-bar-bg {
+  width: 100%;
+  height: 4px;
+  background: #E8EFE9;
+  border-radius: 99px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+#progress-bar-fill {
+  height: 100%;
+  background: #1B3A2F;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+#question-area {
+  margin-bottom: 20px;
+}
+#q-counter {
+  font-size: 12px;
+  font-weight: 600;
+  color: #7A8B82;
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+}
+#q-text {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1B3A2F;
+  line-height: 1.4;
+  margin-bottom: 18px;
+  min-height: 48px;
+}
+#options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+#options-list li button {
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid #C8D8CC;
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #1B3A2F;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  line-height: 1.4;
+}
+#options-list li button:hover:not(:disabled) {
+  background: #F0F6F1;
+  border-color: #1B3A2F;
+}
+#options-list li button.correct {
+  background: #E6F5EC;
+  border-color: #2A7A4B;
+  color: #1B3A2F;
+  font-weight: 600;
+}
+#options-list li button.wrong {
+  background: #FDECEA;
+  border-color: #C2553A;
+  color: #7A2010;
+}
+#options-list li button:disabled {
+  cursor: default;
+}
+#feedback-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #1B3A2F;
+  background: #F0F6F1;
+  border: 1px solid #C8D8CC;
+  display: none;
+}
+#next-btn {
+  margin-top: 18px;
+  display: none;
+  background: #1B3A2F;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+#next-btn:hover { background: #2A5242; }
+#next-btn:active { transform: scale(0.98); }
+ 
+#result-screen {
+  display: none;
+  text-align: center;
+  padding: 8px 0 4px;
+}
+#score-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #1B3A2F;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+#score-ring span.num {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+#score-ring span.denom {
+  font-size: 13px;
+  color: #9EC4AA;
+  line-height: 1.3;
+}
+#result-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1B3A2F;
+  margin-bottom: 8px;
+}
+#result-msg {
+  font-size: 14px;
+  color: #4A5D53;
+  line-height: 1.55;
+  margin-bottom: 24px;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#retry-btn {
+  background: #1B3A2F;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#retry-btn:hover { background: #2A5242; }
+ 
+@media (max-width: 400px) {
+  #quiz-wrap { padding: 20px 14px 24px; }
+  #quiz-header h2 { font-size: 19px; }
+  #q-text { font-size: 15px; }
+}
+</style>
+</head>
+<body>
+<div id="quiz-wrap">
+ 
+  <div id="quiz-header">
+    <p class="eyebrow">From the Hindu Kush to your hands</p>
+    <h2>How well do you know Pakistani hash?</h2>
+    <p class="sub">5 quick questions on origins, craft, and tradition.</p>
+  </div>
+ 
+  <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
+ 
+  <div id="question-area">
+    <p id="q-counter"></p>
+    <p id="q-text"></p>
+    <ul id="options-list"></ul>
+    <div id="feedback-box"></div>
+    <button id="next-btn">Next question &rarr;</button>
+  </div>
+ 
+  <div id="result-screen">
+    <div id="score-ring">
+      <span class="num" id="final-score"></span>
+      <span class="denom" id="final-denom"></span>
+    </div>
+    <p id="result-title"></p>
+    <p id="result-msg"></p>
+    <button id="retry-btn">Try again</button>
+  </div>
+ 
+</div>
+<script>
+var questions = [
+  {
+    q: "What mountain range is considered the birthplace of Pakistani hash?",
+    options: ["The Himalayas", "The Hindu Kush", "The Karakoram", "The Pamir"],
+    correct: 1,
+    fact: "The Hindu Kush range, spanning the Pakistan-Afghanistan border, is the geographic cradle of Pakistani hash. High elevation and intense sunlight triggered the heavy resin production that made these plants perfect for hash-making."
+  },
+  {
+    q: "What traditional aging technique distinguishes premium Pakistani hash from ordinary pressed resin?",
+    options: ["Vacuum-sealing in glass jars", "Burying underground for six months", "Aging inside goatskin or sheepskin", "Cold-pressing at altitude"],
+    correct: 2,
+    fact: "Producers in regions like Tirah Maidan age pressed hash for months inside goatskin or sheepskin. The natural oils from the skin migrate into the resin, adding complexity that modern vacuum sealing cannot replicate."
+  },
+  {
+    q: "What does \"Awal Namber Garda\" refer to in traditional Pakistani hash culture?",
+    options: ["A famous growing region near Peshawar", "The first and purest sift: top-grade dust", "The final pressing stage of hash production", "A landrace strain from the Tirah valley"],
+    correct: 1,
+    fact: "Awal Namber Garda is Pashto for top-grade dust. It refers to the first-pass kief: the finest, purest material collected before any subsequent sieving dilutes the quality. Knowing this term signals deep knowledge of the craft."
+  },
+  {
+    q: "How does charas differ from Pakistani hash?",
+    options: ["Charas uses aged dried flowers; Pakistani hash uses fresh ones", "Charas is hand-rubbed from live plants; Pakistani hash uses sieved dried kief", "Charas comes from Morocco; Pakistani hash comes from India", "Charas is a modern extraction method; Pakistani hash is ancient"],
+    correct: 1,
+    fact: "Charas is made by rubbing live resin directly off flowering plants: a technique from India and the Himalayan regions. Pakistani hash uses sieved kief from dried flowers. Same region, same plant, completely different method."
+  },
+  {
+    q: "What THC range does traditional Pakistani hash typically fall in?",
+    options: ["5 to 10%", "15 to 25%", "40 to 60%", "70 to 90%"],
+    correct: 1,
+    fact: "Traditional Pakistani hash typically runs 15 to 25% THC, with top first-sift grades occasionally exceeding 30%. Modern concentrates like diamonds and dab badder run 70 to 90%+: Pakistani hash is valued for character and full-spectrum effects, not maximum potency."
+  }
+];
+ 
+var current = 0;
+var score = 0;
+var answered = false;
+ 
+function shuffle(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+ 
+var shuffled = shuffle(questions.slice());
+ 
+function loadQuestion() {
+  answered = false;
+  var q = shuffled[current];
+  document.getElementById('q-counter').textContent = 'Question ' + (current + 1) + ' of ' + shuffled.length;
+  document.getElementById('q-text').textContent = q.q;
+ 
+  var fill = ((current) / shuffled.length) * 100;
+  document.getElementById('progress-bar-fill').style.width = fill + '%';
+ 
+  var list = document.getElementById('options-list');
+  list.innerHTML = '';
+  q.options.forEach(function(opt, idx) {
+    var li = document.createElement('li');
+    var btn = document.createElement('button');
+    btn.textContent = opt;
+    btn.setAttribute('data-idx', idx);
+    btn.addEventListener('click', function() { pick(idx, btn); });
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+ 
+  document.getElementById('feedback-box').style.display = 'none';
+  document.getElementById('feedback-box').textContent = '';
+  document.getElementById('next-btn').style.display = 'none';
+}
+ 
+function pick(idx, btn) {
+  if (answered) return;
+  answered = true;
+ 
+  var q = shuffled[current];
+  var allBtns = document.querySelectorAll('#options-list button');
+  allBtns.forEach(function(b) { b.disabled = true; });
+ 
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.correct].classList.add('correct');
+  }
+ 
+  var fb = document.getElementById('feedback-box');
+  fb.textContent = q.fact;
+  fb.style.display = 'block';
+ 
+  var nextBtn = document.getElementById('next-btn');
+  nextBtn.style.display = 'inline-block';
+  nextBtn.textContent = current < shuffled.length - 1 ? 'Next question \u2192' : 'See my results';
+}
+ 
+document.getElementById('next-btn').addEventListener('click', function() {
+  current++;
+  if (current < shuffled.length) {
+    loadQuestion();
+  } else {
+    showResult();
+  }
+});
+ 
+function showResult() {
+  document.getElementById('progress-bar-fill').style.width = '100%';
+  document.getElementById('question-area').style.display = 'none';
+  var rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+ 
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('final-denom').textContent = 'out of ' + shuffled.length;
+ 
+  var titles = ['Keep exploring', 'Getting there', 'Solid knowledge', 'Hash historian', 'Hindu Kush expert'];
+  var msgs = [
+    'Pakistani hash has centuries of craft behind it: the Hindu Kush is a great place to start learning. Scroll back up for the full story.',
+    'You know the basics. A few details around the aging process and regional grades are worth another read.',
+    'You have a solid grasp of the origins and production methods. The Awal Namber Garda section is worth revisiting.',
+    'Impressive. You know your first-sift from your charas and your Tirah Maidan from your Karakoram.',
+    'Perfect score. You understand the geography, the craft, and the culture behind one of the world\'s most storied concentrates.'
+  ];
+ 
+  var tier = Math.min(Math.floor(score / shuffled.length * (titles.length - 0.01)), titles.length - 1);
+  document.getElementById('result-title').textContent = titles[tier];
+  document.getElementById('result-msg').textContent = msgs[tier];
+}
+ 
+document.getElementById('retry-btn').addEventListener('click', function() {
+  current = 0;
+  score = 0;
+  shuffled = shuffle(questions.slice());
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('question-area').style.display = 'block';
+  document.getElementById('progress-bar-fill').style.width = '0%';
+  loadQuestion();
+});
+ 
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'resize') return;
+});
+ 
+function sendHeight() {
+  var h = document.getElementById('quiz-wrap').offsetHeight;
+  window.parent.postMessage({ type: 'setHeight', height: h }, '*');
+}
+ 
+loadQuestion();
+setTimeout(sendHeight, 100);
+window.addEventListener('resize', sendHeight);
+ 
+var observer = new MutationObserver(sendHeight);
+observer.observe(document.getElementById('quiz-wrap'), { childList: true, subtree: true, attributes: true });
+</script>
+</body>
+</html>
